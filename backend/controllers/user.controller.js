@@ -59,17 +59,29 @@ async function create(req, res, next) {
 
     const { body } = req
     body.password = await hashPass(body.password)
-    body.image = req.file.filename
+    body.image = req.file?.filename
     const username = body.username
-    
     const already =await user.findOne({where: {username}})
-    if (already) {
-        return res.send({message: "Username already to use"})
+    if(!body.image){
+        if(already){
+            return res.send({message: "Username already to use"})
+        }
+        else{
+            body.image = "no_profile.webp"
+            const result = await user.create(body)
+            res.send(result)
+        }
     }
     else{
-        const result = await user.create(body)
-        res.send(result)
+        if (already) {
+            return res.send({message: "Username already to use"})
+        }
+        else{
+            const result = await user.create(body)
+            res.send(result)
+        }
     }
+   
     
     
 } 
@@ -81,20 +93,49 @@ async function update(req, res, next) {
 
         const { id } = req.params
         const { body } = req
-        const data = await user.findOne({where : {id}})
-        body.password = (data.password)
-        // body.password = await hashPass(body.password)
+        
         const username = req.body.username
         const already =await user.findOne({where:{[Op.and]: [{username:{[Op.like]:username}},{id:{[Op.ne]:id}}]} })
-        if (already) {
-            return res.send({message: "Username already to use"})
+        body.image = req.file?.filename
+
+        if(!body.image) {
+            if (already){
+                return res.json({message: "Username already to use"})
+            }
+            else {
+                const data = await user.findOne({where : {id}})
+                body.password = (data.password)
+                body.image = (data.image)
+                const result = await user.update(body, {where:{id}})
+                result[0]
+                    ?res.json({message: "successfully updated"})
+                    : next(NotFound())
+            }
         }
         else{
-            const result = await user.update(body, { where: { id } })
-            result[0]
-            ? res.json({ message: 'Successfully updated' })
-            : next(NotFound())
+            if (already){
+                return res.json({message: "Username already to use"})
+            }
+            else{
+                const data = await user.findOne({where : {id}})
+                body.password = (data.password)
+                const result = await user.update(body, { where: { id } })
+                result[0]
+                    ? res.json({ message: 'Successfully updated',  })
+                    : next(NotFound())
+            }
         }
+
+        
+        // if (already) {
+        //     return res.send({message: "Username already to use"})
+        // }
+        // else{
+        //     const result = await user.update(body, { where: { id } })
+        //     result[0]
+        //     ? res.json({ message: 'Successfully updated' })
+        //     : next(NotFound())
+        // }
        
 }
 

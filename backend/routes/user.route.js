@@ -24,7 +24,7 @@ Router
     .get('/', findAll)
     .get('/:id', findById)
     .post('/', upload.single('image'), CreateUserSchema,create )
-    .patch('/:id', UpdateUserSchema, update)
+    .patch('/:id', upload.single('image'), UpdateUserSchema, update)
     .patch('/change-pass/:id', ChangePassSchema, changePass)
     .delete('/:id', remove)
 
