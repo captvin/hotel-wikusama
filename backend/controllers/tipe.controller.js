@@ -53,16 +53,32 @@ async function create(req, res, next) {
         return next(Forbidden())
     }
     const { body } = req
-    body.image = req.file.filename
+    body.image = req.file?.filename
     const nama_tipe = req.body.nama_tipe
     const already =await tipe.findOne({where: {nama_tipe}})
-    if (already) {
-        return res.send({message: "Tipe already exists"})
+    if (!body.image){
+
+        if (already) {
+            return res.send({message: "Tipe already exists"})
+        }
+        else{
+            body.image = "no_image.jpg"
+            const result = await tipe.create(body)
+            res.send(result)
+        }
     }
-    else{
-        const result = await tipe.create(body)
-        res.send(result)
+       
+    else {
+        if (already) {
+            return res.send({message: "Tipe already exists"})
+        }
+        else{
+            const result = await tipe.create(body)
+            res.send(result)
+        }
     }
+    
+    
     
     
 } 
@@ -73,17 +89,37 @@ async function update(req, res, next) {
     }
     const { id } = req.params
     const { body } = req
-    const tipe1 = req.body.nama_tipe
-    const already =await tipe.findOne({where:{[Op.and]: [{nama_tipe:{[Op.like]:tipe1}},{id:{[Op.ne]:id}}]} })
-    if (already) {
-        return res.send({message: "Tipe already exists"})
+   
+    const nama_tipe = req.body.nama_tipe
+    const already =await tipe.findOne({where:{[Op.and]: [{nama_tipe:{[Op.like]:nama_tipe}},{id:{[Op.ne]:id}}]} })
+    body.image = req.file?.filename
+
+    if (!body.image){
+        if (already){
+            return res.json({message: "Tipe already exists"})
+        }
+        else {
+            
+            const data = await tipe.findOne({where : {id}})
+            body.image = (data.image)
+            const result = await tipe.update(body, {where : {id}})
+            result[0]
+                ? res.json({message: 'successfully updated'})
+                : next(NotFound())
+        }
     }
-    else{
-        const result = await tipe.update(body, { where: { id } })
-        result[0]
-            ? res.json({ message: 'Successfully updated',  })
-            : next(NotFound())
+    else {
+        if (already) {
+            return res.send({message: "Tipe already exists"})
+        }
+        else{
+            const result = await tipe.update(body, { where: { id } })
+            result[0]
+                ? res.json({ message: 'Successfully updated',  })
+                : next(NotFound())
+        }
     }
+    
     
 }
 

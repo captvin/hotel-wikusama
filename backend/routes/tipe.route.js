@@ -22,9 +22,11 @@ const { LoggerMiddleware } = new LogRequest('TIPE_ROUTE')
 Router
     .use(LoggerMiddleware, AuthGuard)
     .post('/', upload.single('image'), CreateTipeSchema, create)
-    .patch('/:id', UpdateTipeSchema, update)
+    .patch('/:id', upload.single('image'), update)
     .get('/', findAll)
     .get('/:id', findById)
     .delete('/:id', remove)
 
 module.exports = { Router, route: '/tipe' }
+
+// UpdateTipeSchema
