@@ -37,11 +37,10 @@ async function findById(req, res, next) {
         return next(Forbidden())
     }
     const { id } = req.params
-    // const getDetail = req.query
-    // const option = {
-    //     include: []
-    // }
-    // if (getDetail == 'true') option.include.push('detail')
+    const relations = []
+    if (req.query.getTipe === 'true') {
+        relations.push('kamar')
+    }
     const result = await tipe.findByPk(id, option)
     result
         ? res.json(result)
@@ -55,7 +54,7 @@ async function create(req, res, next) {
     const { body } = req
     body.image = req.file?.filename
     const nama_tipe = req.body.nama_tipe
-    const already =await tipe.findOne({where: {nama_tipe}})
+    const already = await tipe.findOne({where: {nama_tipe}})
     if (!body.image){
 
         if (already) {
@@ -91,7 +90,7 @@ async function update(req, res, next) {
     const { body } = req
    
     const nama_tipe = req.body.nama_tipe
-    const already =await tipe.findOne({where:{[Op.and]: [{nama_tipe:{[Op.like]:nama_tipe}},{id:{[Op.ne]:id}}]} })
+    const already = await tipe.findOne({where:{[Op.and]: [{nama_tipe:{[Op.like]:nama_tipe}},{id:{[Op.ne]:id}}]} })
     body.image = req.file?.filename
 
     if (!body.image){
