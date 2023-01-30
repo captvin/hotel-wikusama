@@ -34,11 +34,12 @@ async function findById(req, res, next) {
     if (req.user.abilities.cannot('read', kamar)) {
         return next(Forbidden())
     }
+    const { id } = req.params
     const relations = []
     if (req.query.getKamar === 'true') {
         relations.push('transaksi')
     }
-    const result = await kamar.findByPk(req.params.id, {include: relations})
+    const result = await kamar.findByPk(id, {include: "tipe"})
     result
         ? res.json(result)
         : next(NotFound())

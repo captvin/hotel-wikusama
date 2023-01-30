@@ -41,7 +41,7 @@ async function findById(req, res, next) {
     if (req.query.getTipe === 'true') {
         relations.push('kamar')
     }
-    const result = await tipe.findByPk(id, option)
+    const result = await tipe.findByPk(id, {include: relations})
     result
         ? res.json(result)
         : next(NotFound())
