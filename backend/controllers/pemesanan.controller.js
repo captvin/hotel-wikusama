@@ -1,4 +1,4 @@
-const { detail} = require('@models')
+const { detail, pemesanan} = require('@models')
 const { NotFound, Forbidden } = require('http-errors')
 const detailSchema = require('../validations/detail.schema')
 
@@ -45,18 +45,34 @@ async function findById(req, res, next) {
 }
 
 async function create(req, res, next) {
-    if (req.user.abilities.cannot('create', detail)) {
+    if (req.user.abilities.cannot('create', pemesanan, detail)) {
         return next(Forbidden())
     }
     // const id_paket = req.body.id_paket
     // const total = await paket.findByPk(req.body.id_paket)
     const { body } = req
-    const result = await detail.create(body)
-    res.json(result)
+    body.tgl_pesan = Date.now()
+    const nama_tamu = body.nama_tamu
+    const already = await pemesanan.findOne({where: {nama_tamu}})
+
+    //logika mulai dari sini
+    if(already){
+        return res.send({message: "pemesanan atas nama"+ {nama_tamu}+"sudah ada. Silahkan menggunakan nama lain"})
+    }
+    else {
+        // const result = await pemesanan.create(body)
+
+        //create detail
+        let tgl_in = new Date(body.tgl_in)
+        let tgl_out = new Date(body.tgl_out)
+        let jumlah_hari = (tgl_out.getTime() - tgl_in.getTime())/(1000*3600*24)
+
+        console.log(jumlah_hari)
+    }
 }
 
 async function update(req, res, next) {
-    if (req.user.abilities.cannot('update', detail)) {
+    if (req.user.abilities.cannot('update', detail, pemesanan)) {
         return next(Forbidden())
     }
     const { id } = req.params
