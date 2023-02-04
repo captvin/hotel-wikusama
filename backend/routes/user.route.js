@@ -28,5 +28,5 @@ Router
     .patch('/change-pass/:id', ChangePassSchema, changePass)
     .delete('/:id', remove)
 
-module.exports = { Router, route: '/user' }
+module.exports = { Router, route: '/admin/user' }
 

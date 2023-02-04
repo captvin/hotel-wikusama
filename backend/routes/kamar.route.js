@@ -15,4 +15,4 @@ Router
     .get('/:id', findById)
     .delete('/:id', remove)
 
-module.exports = { Router, route: '/kamar' }
+module.exports = { Router, route: '/admin/kamar' }

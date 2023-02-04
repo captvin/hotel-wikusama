@@ -9,7 +9,17 @@ var { JWT_SECRET_KEY } = process.env
 module.exports = function (req, res, next) {
     var token = req.headers.authorization
     if (token == undefined || null) {
-        ErrorHandler(Unauthorized(), req, res)
+        // ErrorHandler(Unauthorized(), req, res)
+        const user = {
+            id: 0 ,
+            role: "guest"
+        }
+        const abilities = Abilities(user.id, user.role)
+        req.user = {
+            ...user,
+            abilities
+        }
+        next()
     }
     else {
         token = token.slice(7)

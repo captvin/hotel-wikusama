@@ -8,12 +8,14 @@ const abilities = (id, role) => {
         case 'admin':
             can('manage', [ tipe, kamar, user, detail, pemesanan])
             break;
-        case 'resepsiomis':
-            // can('create', [transaksi, detail])
-            can('read', [detail, transaksi, user, kamar,tipe])
-            can('update', [transaksi,detail])
+        case 'resepsionis':
+            can('read', [detail, pemesanan, user, kamar,tipe])
+            can('update', [transaksi])
             can('update', user, { id })
-            // can('delete', [transaksi,detail])
+            break;
+        case 'guest':
+            can('read', [detail, pemesanan, kamar, tipe])
+            can('create', [pemesanan, detail])
             break;
         default:
             break;

@@ -27,5 +27,5 @@ Router
     .get('/:id', findById)
     .delete('/:id', remove)
 
-module.exports = { Router, route: '/tipe' }
+module.exports = { Router, route: '/admin/tipe' }
 
