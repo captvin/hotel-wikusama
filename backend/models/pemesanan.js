@@ -28,9 +28,9 @@ module.exports = (sequelize, DataTypes) => {
   pemesanan.init({
     nama_tamu: DataTypes.STRING,
     email_tamu: DataTypes.STRING,
-    tgl_pesan: DataTypes.DATE,
-    tgl_in: DataTypes.DATE,
-    tgl_out: DataTypes.DATE,
+    tgl_pesan: DataTypes.DATEONLY,
+    tgl_in: DataTypes.DATEONLY,
+    tgl_out: DataTypes.DATEONLY,
     qty: DataTypes.DOUBLE,
     id_tipe: DataTypes.INTEGER,
     status_pesan: DataTypes.ENUM('baru','C-in', 'C-out'),

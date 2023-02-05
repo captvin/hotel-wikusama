@@ -28,6 +28,7 @@ module.exports = function (req, res, next) {
                 ErrorHandler(Forbidden(), req, res)
             } else {
                 const user = payload
+                
                 const abilities = Abilities(user.id, user.role)
                 req.user = {
                     ...user,
