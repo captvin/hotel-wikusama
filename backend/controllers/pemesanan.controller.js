@@ -48,9 +48,10 @@ async function create(req, res, next) {
     if (req.user.abilities.cannot('create', (pemesanan, detail))) {
         return next(Forbidden())
     }
-    // const id_paket = req.body.id_paket
-    // const total = await paket.findByPk(req.body.id_paket)
+
     const { body } = req
+    let id_kamar = body.id_kamar
+    body.qty = id_kamar.length
     body.tgl_pesan = new Date().toISOString().substr(0, 10)
     body.status_pesan = "baru"
     const nama_tamu = body.nama_tamu
@@ -69,14 +70,12 @@ async function create(req, res, next) {
         let tgl_out = new Date(body.tgl_out)
         let jumlah_hari = (tgl_out.getTime() - tgl_in.getTime())/(1000*3600*24)
 
-        console.log(jumlah_hari)
-
         //get id_pemesanan yang baru di post
         const id_pemesanan = result.id
 
         //mendapatkan kamar yang dipilih
-        let id_kamar = body.id_kamar
-        let detail = []
+        
+        let result_detail = []
 
         //mendefinisikan harga sesuai tipe kamar
         const id = body.id_tipe
@@ -84,20 +83,23 @@ async function create(req, res, next) {
 
         //looping sebanyak kamar
         for (let i=0; i< id_kamar.length; i++){
-            let tgl_akses = tgl_in
+            let tgl_terisi = tgl_in
 
             for (let j =0; j < jumlah_hari; j++){
-                detail.push({
+                result_detail.push({
                     id_pemesanan : id_pemesanan,
                     id_kamar: id_kamar[i],
-                    tgl_akses: tgl_akses,
+                    tgl_terisi: tgl_terisi,
                     harga: harga.harga
                 })
-                tgl_akses = new Date(tgl_akses.getTime() + 86400000)
+                tgl_terisi = new Date(tgl_terisi.getTime() + 86400000)
+
             }
         }
 
-        res.json(detail)
+        await detail.bulkCreate(result_detail)
+        res.send(result)
+        
     }
 }
 
@@ -108,9 +110,8 @@ async function update(req, res, next) {
     const { id } = req.params
     const { body } = req
     const result = await detail.update(body, { where: { id } })
-    result[0]
-        ? res.json({ message: 'Successfully updated' })
-        : next(NotFound())
+        ?res.json({message : "Successfully booking hotel"})
+        :next(NotFound())
 }
 
 async function remove(req, res, next) {
