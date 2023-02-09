@@ -1,6 +1,5 @@
 const { detail, pemesanan, tipe, kamar} = require('@models')
 const { NotFound, Forbidden } = require('http-errors')
-const detailSchema = require('../validations/detail.schema')
 
 async function findAll(req, res, next) {
     if (req.user.abilities.cannot('read', detail)) {
@@ -50,7 +49,7 @@ async function create(req, res, next) {
     }
 
     const { body } = req
-    let id_kamar = body.id_kamar
+    const id_kamar = body.id_kamar
     body.qty = id_kamar.length
     body.tgl_pesan = new Date().toISOString().substr(0, 10)
     body.status_pesan = "baru"

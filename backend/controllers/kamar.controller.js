@@ -25,9 +25,13 @@ async function findAll(req, res, next) {
     }
 
     const result = await kamar.findAndCountAll(options)
+    const standart = await kamar.count({where: {id_tipe: 1}})
+    const delux = await kamar.count({where: {id_tipe:2}})
+    const luxury = await kamar.count({where: {id_tipe:3}})
+    const president = await kamar.count({where: {id_tipe:4}})
     const totalPage = Math.ceil(result.count / limit)
 
-    res.json({ currentPage: page, totalPage, rowLimit: limit, ...result })
+    res.json({ currentPage: page, totalPage, rowLimit: limit, ...result, standart, delux, luxury, president })
 }
 
 async function findById(req, res, next) {
