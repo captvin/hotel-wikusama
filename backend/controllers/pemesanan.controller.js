@@ -103,14 +103,24 @@ async function create(req, res, next) {
 }
 
 async function update(req, res, next) {
-    if (req.user.abilities.cannot('update', detail, pemesanan)) {
+    if (req.user.abilities.cannot('update', pemesanan)) {
         return next(Forbidden())
     }
     const { id } = req.params
     const { body } = req
-    const result = await detail.update(body, { where: { id } })
-        ?res.json({message : "Successfully booking hotel"})
-        :next(NotFound())
+    const data = await pemesanan.findOne({where: {id}})
+    body.nama_tamu = data.nama_tamu
+    body.email_tamu = data.email_tamu
+    body.tgl_pesan = data.tgl_pesan
+    body.tgl_out = data.tgl_out
+    body.tgl_in = data.tgl_in
+    body.qty = data.qty
+    body.id_tipe = data.id_tipe
+    const result = await pemesanan.update(body, { where: { id } })
+    console.log(result)
+    // result[0]
+    //     ?res.json({message : "Successfully booking hotel"})
+    //     :next(NotFound())
 }
 
 async function remove(req, res, next) {

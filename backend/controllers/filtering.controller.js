@@ -1,9 +1,9 @@
-const { kamar } = require('@models')
+const { kamar, detail, pemesanan, tipe } = require('@models')
 const { NotFound, Forbidden } = require('http-errors')
 const { Op } =require('sequelize')
 
 async function findAll(req, res, next) {
-    if (req.user.abilities.cannot('read', kamar)) {
+    if (req.user.abilities.cannot('read', (kamar, detail, pemesanan, tipe))) {
         return next(Forbidden())
     }
     const page = Number(req.query.page) || 1
@@ -18,18 +18,11 @@ async function findAll(req, res, next) {
         where: {}
     }
 
-    const { id_tipe } = req.query
-
-    if (id_tipe) {
-        options.where['id_tipe'] = id_tipe
-    }
+    const { body } = req.query
+    
+    
 
     const result = await kamar.findAndCountAll(options)
-    const standart = await kamar.count({where: {id_tipe: 1}})
-    const delux = await kamar.count({where: {id_tipe:2}})
-    const luxury = await kamar.count({where: {id_tipe:3}})
-    const president = await kamar.count({where: {id_tipe:4}})
-    const count_tipe = {standart, delux, luxury, president}
     const totalPage = Math.ceil(result.count / limit)
 
     res.json({ currentPage: page, totalPage, rowLimit: limit, ...result, count_tipe })

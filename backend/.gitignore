@@ -3,3 +3,5 @@
 
 # debug
 npm-debug.log*
+#config
+.env

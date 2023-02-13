@@ -7,14 +7,7 @@ const { UpdateUserSchema, CreateUserSchema, ChangePassSchema  } = require('@vali
 
 const multer = require('multer');
 const path = require('path');
-const storage = multer.diskStorage({
-    destination:(req,file,cb) => {
-        cb(null,'./public/images/user')
-    },
-    filename: (req,file,cb) => {
-        cb(null, "img-" + Date.now() + path.extname(file.originalname))
-    }
-})
+const storage = multer.memoryStorage()
 const upload = multer({storage: storage})
 
 const { LoggerMiddleware } = new LogRequest('USER_ROUTE')

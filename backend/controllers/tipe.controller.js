@@ -1,6 +1,16 @@
 const { tipe } = require('@models')
 const { NotFound, Forbidden } = require('http-errors')
 const { Op} = require('sequelize')
+const path = require ('path')
+const AWS = require("aws-sdk");
+const {AWS_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION }= process.env
+
+AWS.config.update({
+    region: AWS_REGION,
+    accessKeyId: AWS_ACCESS_KEY_ID,
+    secretAccessKey: AWS_SECRET_ACCESS_KEY
+});
+const s3 = new AWS.S3()
 
 async function findAll(req, res, next) {
     if (req.user.abilities.cannot('read', tipe)) {
@@ -52,8 +62,8 @@ async function create(req, res, next) {
         return next(Forbidden())
     }
     const { body } = req
-    body.image = req.file?.filename
-    const nama_tipe = req.body.nama_tipe
+    body.image = "img-"+ Date.now() + path.extname(req.file?.originalname)
+    const nama_tipe = body.nama_tipe
     const already = await tipe.findOne({where: {nama_tipe}})
     if (!body.image){
 
@@ -72,6 +82,13 @@ async function create(req, res, next) {
             return res.send({message: "Tipe already exists"})
         }
         else{
+            const buf = req.file.buffer
+            const params = {
+                Bucket: AWS_BUCKET_NAME,
+                Key : `tipe/${body.image}`,
+                Body: buf
+            }
+            s3.upload(params).promise()
             const result = await tipe.create(body)
             res.send(result)
         }

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "apexcharts": "^3.33.2",
+    "axios": "^1.3.2",
     "next": "12.1.0",
     "niceselectwithsabuj": "^1.0.4",
     "react": "17.0.2",

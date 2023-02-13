@@ -1,23 +1,29 @@
+
+
+
+
+
 {
+  
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "ukk_hotel",
-    "host": "127.0.0.1",
+    "username": "ud6b4r0nlh4bl4ul",
+    "password": "NLhkZhJydVPxRKA0sjVI",
+    "database": "bdhblrzbi6qvkpq6leie",
+    "host": "bdhblrzbi6qvkpq6leie-mysql.services.clever-cloud.com",
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "ukk_hotel",
-    "host": "127.0.0.1",
+    "username": "ud6b4r0nlh4bl4ul",
+    "password": "NLhkZhJydVPxRKA0sjVI",
+    "database": "bdhblrzbi6qvkpq6leie",
+    "host": "bdhblrzbi6qvkpq6leie-mysql.services.clever-cloud.com",
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "ukk_hotel",
-    "host": "127.0.0.1",
+    "username": "ud6b4r0nlh4bl4ul",
+    "password": "NLhkZhJydVPxRKA0sjVI",
+    "database": "bdhblrzbi6qvkpq6leie",
+    "host": "bdhblrzbi6qvkpq6leie-mysql.services.clever-cloud.com",
     "dialect": "mysql"
   }
 }
