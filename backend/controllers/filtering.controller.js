@@ -6,26 +6,43 @@ async function findAll(req, res, next) {
     if (req.user.abilities.cannot('read', (kamar, detail, pemesanan, tipe))) {
         return next(Forbidden())
     }
-    const page = Number(req.query.page) || 1
-    const limit = Number(req.query.limit) || 10
-
-    const options = {
-        offset: (page - 1) * limit,
-        limit,
-        order: [
-            ['createdAt', 'ASC']
+    const { body } = req
+    const result = await tipe.findAll({
+        include: [
+            {
+                model: kamar,
+                as: "kamar",
+                attributes: ["id"],
+                required: false,
+                where: {
+                    id_tipe: body.id_tipe,
+                },
+                include: [
+                    {
+                        model: detail,
+                        as: "detail",
+                        attributes: ["tgl_akses"],
+                        required: false,
+                        where: {
+                            tgl_akses: {
+                                [Op.and]: {
+                                    [Op.between]: [body.tgl_in, body.tgl_out],
+                                }
+                            },
+                        },
+                    },
+                ],
+            },
         ],
-        where: {}
-    }
+        where: {
+            "$kamar.id_tipe$": req.body.id,
+            "$kamar->detail.tgl_akses$": {
+                [Op.is]: null
+            },
+        },
+    })
 
-    const { body } = req.query
-    
-    
-
-    const result = await kamar.findAndCountAll(options)
-    const totalPage = Math.ceil(result.count / limit)
-
-    res.json({ currentPage: page, totalPage, rowLimit: limit, ...result, count_tipe })
+    res.json(result)
 }
 
 async function findById(req, res, next) {

@@ -143,15 +143,15 @@ const Sidebar = ({ open, closeSidebar }) => {
             <ul>
               <li>
                 <i className="fal fa-phone" />
-                <a href="tel:90809875769">908-098-757-69</a>
+                <a href="https://api.whatsapp.com/send/?phone=6282335117847&text&type=phone_number&app_absent=0">6282335117847</a>
               </li>
               <li>
                 <i className="fal fa-envelope" />
-                <a href="mailto:info@webmail.com">info@webmail.com</a>
+                <a href="mailto:info@webmail.com">WikuHotel@gmail.com</a>
               </li>
               <li>
-                <i className="fal fa-map-marker-alt" /> 13/A, Miranda City Hall,
-                NYC
+                <i className="fal fa-map-marker-alt" />
+                <a href="https://www.google.co.id/maps/place/SMK+Telkom+Malang/@-7.9768567,112.6568273,17z/data=!3m1!4b1!4m6!3m5!1s0x2dd6285c5c1b44e3:0xf6c889ac7452dc3a!8m2!3d-7.976862!4d112.659016!16s%2Fg%2F1wjspsfl?hl=en">Jl. Danau Ranau</a>
               </li>
             </ul>
           </div>

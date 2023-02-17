@@ -15,7 +15,7 @@ const About = () => {
           <div className="row align-items-center">
             <div className="col-md-6">
               <div className="image mb-30">
-                <img src="assets/images/resource/image-45.jpg" alt="" />
+                <img src="assets/images/resource/profile.jpg" alt="" />
               </div>
             </div>
             <div className="col-lg-6">
@@ -24,20 +24,16 @@ const About = () => {
                   <img src="assets/images/icons/image-2.png" alt="" />
                 </div>
                 <h2 className="sec-title">
-                  Welcome To Our <br />{" "}
-                  <span className="theme-color">King Hotel</span>{" "}
+                  Adhe Alvin <br />{" "}
+                  <span className="theme-color">As a Developer </span>{" "}
                 </h2>
                 <div className="text-two">
-                  We Have Over 40 Payment Ways for Locking the Lowest Room
-                  Rates. No Credit Card Needed! Read Reviews from Verified
-                  Guests.
+                a student of SMK Telkom Malang majoring in Software Engineering with 6 months of internship experience at Mark Design Surabaya. Have an interest in working in the field of web development (backend) and have the goal of continuing to learn for the betterment of myself and the company
                 </div>
                 <div className="bottom-content">
-                  <div className="ratings">4.6</div>
-                  <div className="text-three">
-                    Users <br /> Ratings
-                  </div>
-                  <Link href="/gallery">
+                  <div className="ratings"></div>
+                  
+                  <Link href="https://linktr.ee/adhe_devin">
                     <a className="theme-btn btn-style-one dark">
                       <span>Explore Now</span>
                     </a>
@@ -52,7 +48,7 @@ const About = () => {
       <section className="section-thirty-three">
         <div className="auto-container">
           <div className="sub-title text-center">Featurees</div>
-          <h2 className="sec-title text-center">Core Facitilites</h2>
+          <h2 className="sec-title text-center">Hotel Facitilites</h2>
           <div className="row">
             <div className="col-lg-3 col-md-6">
               <div className="block-thirty-three">
@@ -221,7 +217,7 @@ const About = () => {
                   >
                     <div className="block-thirty-six">
                       <div className="image">
-                        <img src="assets/images/resource/image-48.jpg" alt="" />
+                        <img src="assets/images/resource/building.jpg" alt="" />
                       </div>
                       <div className="text">
                         Lorem ipsum dolor sit amet, consectetur adipisicing

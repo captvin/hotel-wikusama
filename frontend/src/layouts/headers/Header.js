@@ -24,45 +24,6 @@ const Header = ({ headernumber }) => {
           headernumber ? "" : "style-two"
         }`}
       >
-        <div className="header-top">
-          <div className="auto-container">
-            <div className="wrapper-box box-style-one">
-              <div className="left-column">
-                <ul className="contact-info box-style-two">
-                  <li>
-                    <a href="mailto:info@webmail.com">info@webmail.com</a>
-                  </li>
-                  <li>|</li>
-                  <li>
-                    <a href="tel:09806764956">098-067-649-56</a>
-                  </li>
-                </ul>
-              </div>
-              <div className="right-column box-style-two">
-                <div className="login">
-                  <a href="#">Login</a>
-                </div>
-                <ul className="social-icon box-style-two">
-                  <li>
-                    <a href="#"> fb.</a>
-                  </li>
-                  <li>
-                    <a href="#"> tw.</a>
-                  </li>
-                  <li>
-                    <a href="#"> be.</a>
-                  </li>
-                  <li>
-                    <a href="#"> yu.</a>
-                  </li>
-                  <li>
-                    <a href="#"> ln.</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
         <div className="auto-container">
           <div className="text-center">
             {/*Logo*/}
@@ -96,18 +57,13 @@ const Header = ({ headernumber }) => {
                     <ul className="navigation">
                       <li className="dropdown">
                         <Link href="/">Home</Link>
-                        <ul>
-                          <Home />
-                        </ul>
                       </li>
                       <li>
                         <Link href="/about">About Us </Link>
                       </li>
                       <li className="dropdown">
-                        <a href="#">Rooms</a>
-                        <ul>
-                          <Room />
-                        </ul>
+                        <a href="/room-grid">Rooms</a>
+                        
                       </li>
                       <li className="dropdown">
                         <a href="#">Pages</a>
@@ -162,26 +118,14 @@ const Header = ({ headernumber }) => {
                   <nav className="main-menu navbar-expand-md navbar-light">
                     <div className="collapse navbar-collapse show clearfix">
                       <ul className="navigation">
-                        <li className="dropdown">
-                          <Link href="/">Home</Link>
-                          <ul>
-                            <Home />
-                          </ul>
-                          <div className="dropdown-btn">
-                            <span className="fa fa-angle-right" />
-                          </div>
+                      <li>
+                          <Link href="/">Home </Link>
                         </li>
                         <li>
                           <Link href="/about">About Us </Link>
                         </li>
-                        <li className="dropdown">
-                          <a href="#">Rooms</a>
-                          <ul>
-                            <Room />
-                          </ul>
-                          <div className="dropdown-btn">
-                            <span className="fa fa-angle-right" />
-                          </div>
+                        <li>
+                          <Link href="/room-grid">Rooms </Link>
                         </li>
                         <li className="dropdown">
                           <a href="#">Pages</a>

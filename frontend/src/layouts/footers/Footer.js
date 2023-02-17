@@ -25,35 +25,13 @@ const Footer = ({ noBg, extraCls }) => {
                   <div className="col-sm-6">
                     <ul>
                       <li>
-                        <a href="#">About</a>
+                        <a href="/about">About</a>
                       </li>
                       <li>
-                        <a href="#">Approach</a>
+                        <a href="/room-grid">Room</a>
                       </li>
                       <li>
-                        <a href="#">People</a>
-                      </li>
-                      <li>
-                        <a href="#">Reviews</a>
-                      </li>
-                      <li>
-                        <a href="#">Insights</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="col-sm-6">
-                    <ul>
-                      <li>
-                        <a href="#">Services</a>
-                      </li>
-                      <li>
-                        <a href="#">Our Menus</a>
-                      </li>
-                      <li>
-                        <a href="#">Shop</a>
-                      </li>
-                      <li>
-                        <a href="#">Contacts</a>
+                        <a href="#">Admin</a>
                       </li>
                     </ul>
                   </div>
@@ -95,15 +73,15 @@ const Footer = ({ noBg, extraCls }) => {
                 <ul>
                   <li>
                     <i className="fal fa-phone" />
-                    <a href="tel:90809875769">908-098-757-69</a>
+                    <a href="https://api.whatsapp.com/send/?phone=6282335117847&text&type=phone_number&app_absent=0">082335117847</a>
                   </li>
                   <li>
                     <i className="fal fa-envelope" />
-                    <a href="mailto:info@webmail.com">info@webmail.com</a>
+                    <a href=".com">alpinoke82@gmail.com</a>
                   </li>
                   <li>
-                    <i className="fal fa-map-marker-alt" /> 13/A, Miranda City
-                    Hall, NYC
+                    <i className="fal fa-map-marker-alt" />
+                    <a href="https://www.google.co.id/maps/place/SMK+Telkom+Malang/@-7.9768567,112.6568273,17z/data=!3m1!4b1!4m6!3m5!1s0x2dd6285c5c1b44e3:0xf6c889ac7452dc3a!8m2!3d-7.976862!4d112.659016!16s%2Fg%2F1wjspsfl?hl=en">Jl. Danau Ranau</a>
                   </li>
                 </ul>
               </div>
@@ -116,7 +94,7 @@ const Footer = ({ noBg, extraCls }) => {
         <div className="auto-container">
           <div className="wrapper-box">
             <div className="copyright">
-              <div className="text">Copyright Kingho. All right reserved.</div>
+              <div className="text">Copyright Wiku Hotel. Buatan adhe alvin rill cuy.</div>
             </div>
             <div className="brand-logo">
               <Swiper

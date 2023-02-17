@@ -32,6 +32,9 @@ const Header2 = () => {
                   </Link>
                 </div>
               </div>
+            </div>
+
+            <div className="right-column">
               {/*Nav Box*/}
               <div className="nav-outer">
                 {/*Mobile Navigation Toggler*/}
@@ -44,19 +47,17 @@ const Header2 = () => {
                 {/* Main Menu */}
                 <nav className="main-menu navbar-expand-md navbar-light">
                   <div className="collapse navbar-collapse show clearfix">
-                    <ul className="navigation">
+                    <div>
+                      <ul className="navigation">
                       <li className="dropdown">
                         <Link href="/">Home</Link>
                         
                       </li>
                       <li>
-                        <Link href="/about">About Us </Link>
+                        <Link href="/about">About Us</Link>
                       </li>
                       <li className="dropdown">
-                        <a href="#">Rooms</a>
-                        <ul>
-                          <Room />
-                        </ul>
+                        <a href="/room-grid">Rooms</a>
                       </li>
                       <li className="dropdown">
                         <a href="#">Pages</a>
@@ -74,17 +75,11 @@ const Header2 = () => {
                         <Link href="/contact">Contact</Link>
                       </li>
                     </ul>
+                    </div>
+    
+                    
                   </div>
                 </nav>
-              </div>
-            </div>
-            <div className="right-column">
-              <div className="language">
-                <select>
-                  <option data-display="English">English</option>
-                  <option value={1}>French</option>
-                  <option value={2}>Spanish</option>
-                </select>
               </div>
             </div>
           </div>
@@ -128,10 +123,8 @@ const Header2 = () => {
                           <Link href="/about">About Us </Link>
                         </li>
                         <li className="dropdown">
-                          <a href="#">Rooms</a>
-                          <ul>
-                            <Room />
-                          </ul>
+                          <a href="/room-grid">Rooms</a>
+                          
                         </li>
                         <li className="dropdown">
                           <a href="#">Pages</a>
@@ -154,13 +147,6 @@ const Header2 = () => {
                 </div>
               </div>
               <div className="right-column">
-                <div className="language">
-                  <select>
-                    <option data-display="English">English</option>
-                    <option value={1}>French</option>
-                    <option value={2}>Spanish</option>
-                  </select>
-                </div>
               </div>
             </div>
           </div>

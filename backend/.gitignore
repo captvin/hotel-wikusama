@@ -4,5 +4,5 @@
 # debug
 npm-debug.log*
 #config
-.env
-./config
+/.env
+/config

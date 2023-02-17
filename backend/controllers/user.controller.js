@@ -1,10 +1,10 @@
-const { user} = require('@models')
+const { user } = require('@models')
 const { NotFound, Forbidden } = require('http-errors')
 const { Op } = require('sequelize')
 const { hashPass } = require('@utils/hashPass')
-const path = require ('path')
+const path = require('path')
 const AWS = require("aws-sdk");
-const {AWS_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION }= process.env
+const { AWS_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION } = process.env
 
 AWS.config.update({
     region: AWS_REGION,
@@ -30,7 +30,7 @@ async function findAll(req, res, next) {
     }
 
     const { role, username, name } = req.query
-   
+
     if (name) {
         options.where['role'] = role
     }
@@ -41,7 +41,7 @@ async function findAll(req, res, next) {
         options.where['name'] = { [Op.like]: `%${name}%` }
     }
 
-    const result = await user.findAndCountAll({options});
+    const result = await user.findAndCountAll({ options });
     const totalPage = Math.ceil(result.count / limit)
 
     res.json({ currentPage: page, totalPage, rowLimit: limit, ...result })
@@ -68,28 +68,29 @@ async function create(req, res, next) {
 
     const { body } = req
     body.password = await hashPass(body.password)
-    body.image = "img-" + Date.now() + path.extname(req.file?.originalname)
+    body.image = req.file?.originalname
     const username = body.username
-    const already =await user.findOne({where: {username}})
-    if(!body.image){
-        if(already){
-            return res.send({message: "Username already to use"})
+    const already = await user.findOne({ where: { username } })
+    if (!body.image) {
+        if (already) {
+            return res.send({ message: "Username already to use" })
         }
-        else{
+        else {
             body.image = "no_profile.webp"
             const result = await user.create(body)
             res.send(result)
         }
     }
-    else{
+    else {
         if (already) {
-            return res.send({message: "Username already to use"})
+            return res.send({ message: "Username already to use" })
         }
-        else{
+        else {
+            const gambar = "img-" + Date.now() + path.extname(body.image)
             const buf = req.file.buffer
             const params = {
                 Bucket: AWS_BUCKET_NAME,
-                Key : `user/${body.image}`,
+                Key: `user/${gambar}`,
                 Body: buf
             }
             s3.upload(params).promise()
@@ -97,10 +98,10 @@ async function create(req, res, next) {
             res.send(result)
         }
     }
-   
-    
-    
-} 
+
+
+
+}
 
 async function update(req, res, next) {
     if (req.user.abilities.cannot('update', user)) {
@@ -109,40 +110,75 @@ async function update(req, res, next) {
 
     const { id } = req.params
     const { body } = req
-    
+    body.image = req.file?.originalname
     const username = req.body.username
-    const already =await user.findOne({where:{[Op.and]: [{username:{[Op.like]:username}},{id:{[Op.ne]:id}}]} })
-    body.image = req.file?.filename
+    const already = await user.findOne({ where: { [Op.and]: [{ username: { [Op.like]: username } }, { id: { [Op.ne]: id } }] } })
 
-    if(!body.image) {
-        if (already){
-            return res.json({message: "Username already to use"})
+    if (!body.image) {
+        if (already) {
+            return res.json({ message: "Username already to use" })
         }
         else {
-            const data = await user.findOne({where : {id}})
+            const data = await user.findOne({ where: { id } })
             body.password = (data.password)
             body.image = (data.image)
-            const result = await user.update(body, {where:{id}})
+            const result = await user.update(body, { where: { id } })
             result[0]
-                ?res.json({message: "successfully updated"})
+                ? res.json({ message: "successfully updated ppppppp" })
                 : next(NotFound())
         }
     }
-    else{
-        if (already){
-            return res.json({message: "Username already to use"})
+    else {
+        if (already) {
+            return res.json({ message: "Username already to use" })
         }
-        else{
-            const data = await user.findOne({where : {id}})
+        else {
+            const data = await user.findOne({ where: { id } })
             body.password = (data.password)
-            const result = await user.update(body, { where: { id } })
-            result[0]
-                ? res.json({ message: 'Successfully updated',  })
-                : next(NotFound())
+            const img = (data.image)
+            const gambar = "img-" + Date.now() + path.extname(body.image)
+
+            if (img == "no_profile.webp") {
+                const buf = req.file.buffer
+                const params = {
+                    Bucket: AWS_BUCKET_NAME,
+                    Key: `user/${gambar}`,
+                    Body: buf
+                }
+                s3.upload(params).promise()
+                const result = await user.update(body, { where: { id } })
+                result[0]
+                    ? res.json({ message: 'Successfully updated', })
+                    : next(NotFound())
+            }
+
+            else {
+                
+                //delete image in s3
+                const del = {
+                    Bucket: AWS_BUCKET_NAME,
+                    Key: `user/${img}`
+                }
+                s3.deleteObject(del).promise()
+
+                //upload again image in s3
+                const buf = req.file.buffer
+                const patch = {
+                    Bucket: AWS_BUCKET_NAME,
+                    Key: `user/${gambar}`,
+                    Body: buf
+                }
+                s3.upload(patch).promise()
+                const result = await user.update(body, { where: { id } })
+                result[0]
+                    ? res.json({ message: 'Successfully updated', })
+                    : next(NotFound())
+            }
+
         }
     }
 
-       
+
 }
 
 async function changePass(req, res, next) {
@@ -167,6 +203,14 @@ async function remove(req, res, next) {
         return next(Forbidden())
     }
     const { id } = req.params
+    const data = await user.findOne({where:{id}, attributes:['image']})
+
+    const del = {
+        Bucket: AWS_BUCKET_NAME,
+        Key: `user/${data}`
+    }
+    s3.deleteObject(del).promise()
+    
     const result = await user.destroy({ where: { id } })
     result === 1
         ? res.json({ message: 'Successfully deleted' })

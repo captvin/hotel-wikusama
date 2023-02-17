@@ -6,7 +6,7 @@ import Layouts from "../src/layouts/Layouts";
 const RoomGrid = () => {
   return (
     <Layouts>
-      <PageBanner pageName={"Room Grid"} />
+      <PageBanner pageName={"Our Room"} />
       <section className="section-twenty-five">
         <div className="auto-container">
           <div className="row">
