@@ -1,5 +1,6 @@
 const { detail, pemesanan, tipe, kamar} = require('@models')
 const { NotFound, Forbidden } = require('http-errors')
+const { Op } = require('sequelize')
 
 async function findAll(req, res, next) {
     if (req.user.abilities.cannot('read', detail)) {
@@ -17,13 +18,19 @@ async function findAll(req, res, next) {
         where: {}
     }
 
-    const { id_paket } = req.query
+    const { id_tipe, tgl_pesan, email_tamu } = req.query
 
-    if (id_paket) {
-        options.where['id_paket'] = id_paket
+    if (id_tipe) {
+        options.where['id_tipe'] = id_tipe
+    }
+    if(tgl_pesan) {
+        options.where['tgl_pesan'] = tgl_pesan
+    }
+    if(email_tamu){
+        options.where['email_tamu'] = {[Op.like]: `%${email_tamu}%`}
     }
 
-    const result = await detail.findAndCountAll(options)
+    const result = await pemesanan.findAndCountAll(options)
     const totalPage = Math.ceil(result.count / limit)
 
     res.json({ currentPage: page, totalPage, rowLimit: limit, ...result })
@@ -55,10 +62,11 @@ async function create(req, res, next) {
     body.status_pesan = "baru"
     const nama_tamu = body.nama_tamu
     const already = await pemesanan.findOne({where: {nama_tamu}})
+    const already2 = await pemesanan.findOne({where: {tgl_pesan}})
 
 
     //logika mulai dari sini
-    if(already){
+    if(already && already2){
         return res.send({message: "pemesanan atas nama "+ nama_tamu +" sudah ada. Silahkan menggunakan nama lain"})
     }
     else {

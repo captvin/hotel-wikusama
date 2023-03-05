@@ -2,10 +2,10 @@ const Router = require('express').Router()
 const AuthGuard = require('@middlewares/auth-guard')
 const LogRequest = require('@middlewares/log-request')
 
-const { findAll, findById, create, update, remove } = require('@controllers/filtering.controller')
+const { findAll, } = require('@controllers/avail.controller')
 // const { UpdateKamarSchema, CreateKamarSchema } = require('@validations/kamar.schema')
 
-const { LoggerMiddleware } = new LogRequest('FILTERING_ROUTE')
+const { LoggerMiddleware } = new LogRequest('avail_ROUTE')
 
 Router
     .use(LoggerMiddleware, AuthGuard)
@@ -15,4 +15,4 @@ Router
     // .get('/:id', findById)
     // .delete('/:id', remove)
 
-module.exports = { Router, route: '/filtering' }
+module.exports = { Router, route: '/avail' }

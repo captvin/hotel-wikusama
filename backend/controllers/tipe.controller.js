@@ -1,9 +1,9 @@
 const { tipe } = require('@models')
 const { NotFound, Forbidden } = require('http-errors')
-const { Op} = require('sequelize')
-const path = require ('path')
-const AWS = require("aws-sdk");
-const {AWS_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION }= process.env
+const { Op } = require('sequelize')
+const path = require('path')
+const AWS = require("aws-sdk")
+const { AWS_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION } = process.env
 
 AWS.config.update({
     region: AWS_REGION,
@@ -37,6 +37,7 @@ async function findAll(req, res, next) {
     }
 
     const result = await tipe.findAndCountAll(options)
+    
     const totalPage = Math.ceil(result.count / limit)
 
     res.json({ currentPage: page, totalPage, rowLimit: limit, ...result })
@@ -51,7 +52,7 @@ async function findById(req, res, next) {
     if (req.query.getTipe === 'true') {
         relations.push('kamar')
     }
-    const result = await tipe.findByPk(id, {include: relations})
+    const result = await tipe.findByPk(id, { include: relations })
     result
         ? res.json(result)
         : next(NotFound())
@@ -62,43 +63,42 @@ async function create(req, res, next) {
         return next(Forbidden())
     }
     const { body } = req
-    body.image = req.file?.originalname
+    const image = req.file?.originalname
+    // body.image = "img-" + Date.now() + path.extname(image)
     const nama_tipe = body.nama_tipe
-    const already = await tipe.findOne({where: {nama_tipe}})
-    if (!body.image){
+    const already = await tipe.findOne({ where: { nama_tipe } })
+    if (!image) {
 
         if (already) {
-            return res.send({message: "Tipe already exists"})
+            return res.send({ message: "Tipe already exists" })
         }
-        else{
+        else {
             body.image = "no_image.jpg"
             const result = await tipe.create(body)
             res.send(result)
         }
     }
-       
+
     else {
         if (already) {
-            return res.send({message: "Tipe already exists"})
+            return res.send({ message: "Tipe already exists" })
         }
-        else{
-            const gambar = "img-" + Date.now() + path.extname(body.image)
+        else {
+            const gambar = "img-" + Date.now() + path.extname(image)
+            body.image = gambar
             const buf = req.file.buffer
             const params = {
                 Bucket: AWS_BUCKET_NAME,
-                Key : `tipe/${gambar}`,
+                Key: `tipe/${gambar}`,
                 Body: buf
             }
-            s3.upload(params).promise()
-            const result = await tipe.create(body)
-            res.send(result)
+            const result = await s3.upload(params).promise()
+            const result1 = await tipe.create(body)
+            res.send({result, result1})
         }
     }
-    
-    
-    
-    
-} 
+
+}
 
 async function update(req, res, next) {
     if (req.user.abilities.cannot('update', tipe)) {
@@ -107,32 +107,33 @@ async function update(req, res, next) {
     const { id } = req.params
     const { body } = req
     const nama_tipe = req.body.nama_tipe
-    const already = await tipe.findOne({where:{[Op.and]: [{nama_tipe:{[Op.like]:nama_tipe}},{id:{[Op.ne]:id}}]} })
-    body.image = req.file?.originalname
+    const already = await tipe.findOne({ where: { [Op.and]: [{ nama_tipe: { [Op.like]: nama_tipe } }, { id: { [Op.ne]: id } }] } })
+    const image = req.file?.originalname
 
-    if (!body.image){
-        if (already){
-            return res.json({message: "Tipe already exists"})
+    if (!image) {
+        if (already) {
+            return res.json({ message: "Tipe already exists" })
         }
         else {
-            
-            const data = await tipe.findOne({where : {id}})
+
+            const data = await tipe.findOne({ where: { id } })
             body.image = (data.image)
-            const result = await tipe.update(body, {where : {id}})
+            const result = await tipe.update(body, { where: { id } })
             result[0]
-                ? res.json({message: 'successfully updated'})
+                ? res.json({ message: 'successfully updated' })
                 : next(NotFound())
         }
     }
     else {
         if (already) {
-            return res.send({message: "Tipe already exists"})
+            return res.send({ message: "Tipe already exists" })
         }
-        else{
-            const img = await tipe.findOne({where:{id}, attributes: ['image']})
-            const gambar = "img-" + Date.now() + path.extname(body.image)
+        else {
+            const data = await tipe.findOne({ where: { id } })
+            const gambar = "img-" + Date.now() + path.extname(image)
+            body.image = gambar
 
-            if ( img = "no_image.jpg"){
+            if (img = "no_image.jpg") {
                 const buf = req.file.buffer
                 const params = {
                     Bucket: AWS_BUCKET_NAME,
@@ -146,11 +147,11 @@ async function update(req, res, next) {
                     : next(NotFound())
 
             }
-            else{
+            else {
                 //delete image in S3
                 const del = {
                     Bucket: AWS_BUCKET_NAME,
-                    Key: `tipe/${img}`
+                    Key: `tipe/${data.image}`
                 }
                 s3.deleteObject(del).promise()
 
@@ -167,11 +168,11 @@ async function update(req, res, next) {
                     ? res.json({ message: 'Successfully updated', })
                     : next(NotFound())
             }
-           
+
         }
     }
-    
-    
+
+
 }
 
 async function remove(req, res, next) {
@@ -179,16 +180,27 @@ async function remove(req, res, next) {
         return next(Forbidden())
     }
     const { id } = req.params
-    const img = await tipe.findOne({where:{id}, attributes:['image']})
-    const del = {
-        Bucket: AWS_BUCKET_NAME,
-        Key: `tipe/${img}`
+    const data = await tipe.findOne({ where: { id } })
+
+    if (data.image = "no_image.jpg") {
+        const result = await tipe.destroy({ where: { id } })
+        result === 1
+            ? res.json({ message: "successfully deleted" })
+            : next(NotFound())
     }
-    s3.deleteObject(del).promise()
-    const result = await tipe.destroy({ where: { id } })
-    result === 1
-        ? res.json({ message: 'Successfully deleted' })
-        : next(NotFound())
+    else {
+        const del = {
+            Bucket: AWS_BUCKET_NAME,
+            Key: `tipe/${data.image}`
+        }
+        await s3.deleteObject(del).promise()
+        const result = await tipe.destroy({ where: { id } })
+        result === 1
+            ? res.json({ message: 'Successfully deleted' })
+            : next(NotFound())
+    }
+
+
 }
 
 module.exports = {

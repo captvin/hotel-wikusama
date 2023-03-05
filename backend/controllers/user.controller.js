@@ -29,19 +29,20 @@ async function findAll(req, res, next) {
         where: {}
     }
 
-    const { role, username, name } = req.query
+    const { role, username, nama } = req.query
 
-    if (name) {
+    if (role) {
         options.where['role'] = role
     }
     if (username) {
         options.where['username'] = { [Op.like]: `%${username}%` }
     }
-    if (name) {
-        options.where['name'] = { [Op.like]: `%${name}%` }
+    if (nama) {
+        options.where['nama'] = { [Op.like]: `%${nama}%` }
     }
 
-    const result = await user.findAndCountAll({ options });
+    
+    const result = await user.findAndCountAll( options );
     const totalPage = Math.ceil(result.count / limit)
 
     res.json({ currentPage: page, totalPage, rowLimit: limit, ...result })
@@ -68,10 +69,10 @@ async function create(req, res, next) {
 
     const { body } = req
     body.password = await hashPass(body.password)
-    body.image = req.file?.originalname
+    const image = req.file?.originalname
     const username = body.username
     const already = await user.findOne({ where: { username } })
-    if (!body.image) {
+    if (!image) {
         if (already) {
             return res.send({ message: "Username already to use" })
         }
@@ -86,7 +87,8 @@ async function create(req, res, next) {
             return res.send({ message: "Username already to use" })
         }
         else {
-            const gambar = "img-" + Date.now() + path.extname(body.image)
+            const gambar = "img-" + Date.now() + path.extname(image)
+            body.image = gambar
             const buf = req.file.buffer
             const params = {
                 Bucket: AWS_BUCKET_NAME,
@@ -110,11 +112,11 @@ async function update(req, res, next) {
 
     const { id } = req.params
     const { body } = req
-    body.image = req.file?.originalname
+    const image = req.file?.originalname
     const username = req.body.username
     const already = await user.findOne({ where: { [Op.and]: [{ username: { [Op.like]: username } }, { id: { [Op.ne]: id } }] } })
 
-    if (!body.image) {
+    if (!image) {
         if (already) {
             return res.json({ message: "Username already to use" })
         }
@@ -124,7 +126,7 @@ async function update(req, res, next) {
             body.image = (data.image)
             const result = await user.update(body, { where: { id } })
             result[0]
-                ? res.json({ message: "successfully updated ppppppp" })
+                ? res.json({ message: "successfully updated" })
                 : next(NotFound())
         }
     }
@@ -136,7 +138,8 @@ async function update(req, res, next) {
             const data = await user.findOne({ where: { id } })
             body.password = (data.password)
             const img = (data.image)
-            const gambar = "img-" + Date.now() + path.extname(body.image)
+            const gambar = "img-" + Date.now() + path.extname(image)
+            body.image = gambar
 
             if (img == "no_profile.webp") {
                 const buf = req.file.buffer
@@ -157,7 +160,7 @@ async function update(req, res, next) {
                 //delete image in s3
                 const del = {
                     Bucket: AWS_BUCKET_NAME,
-                    Key: `user/${img}`
+                    Key: `user/${data.image}`
                 }
                 s3.deleteObject(del).promise()
 
@@ -203,18 +206,25 @@ async function remove(req, res, next) {
         return next(Forbidden())
     }
     const { id } = req.params
-    const data = await user.findOne({where:{id}, attributes:['image']})
+    const data = await user.findOne({where:{id}})
 
-    const del = {
-        Bucket: AWS_BUCKET_NAME,
-        Key: `user/${data}`
+    if (data.image = "no_profile.webp") {
+        const result = await user.destroy({ where: { id } })
+        result === 1
+            ? res.json({ message: "successfully deleted" })
+            : next(NotFound())
     }
-    s3.deleteObject(del).promise()
-    
-    const result = await user.destroy({ where: { id } })
-    result === 1
-        ? res.json({ message: 'Successfully deleted' })
-        : next(NotFound())
+    else {
+        const del = {
+            Bucket: AWS_BUCKET_NAME,
+            Key: `user/${data.image}`
+        }
+        await s3.deleteObject(del).promise()
+        const result = await user.destroy({ where: { id } })
+        result === 1
+            ? res.json({ message: 'Successfully deleted' })
+            : next(NotFound())
+    }
 }
 
 module.exports = {

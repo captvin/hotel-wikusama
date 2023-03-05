@@ -33,13 +33,11 @@ const Index2 = () => {
       await axios
       .get('/kamar',)
       .then((res) => setDataKamar(res.data.count_tipe))
-      .catch((err) => console.log("error kontol"))
+      .catch((err) => console.log("error bodoh"))
     }
     
     Promise.all([getKamar()])
   }, [])
-
-  console.log(data);
   
   return (
     <Layouts noHeader>
@@ -77,19 +75,19 @@ const Index2 = () => {
                               <DatePicker
                                 date={date}
                                 onChange={setDate}
-                                placeholder={`Arrival Date`}
+                                placeholder={`Check-in`}
                               />
                             </li>
                             <li>
                               <DatePicker
                                 date={date2}
                                 onChange={setDate2}
-                                placeholder={`Arrival Date`}
+                                placeholder={`Check-out`}
                               />
                             </li>
                             <li>
                               <select>
-                                <option data-display="Aduls">Aduls</option>
+                                <option data-display="Type">Type</option>
                                 <option value={1}>0 Adul</option>
                                 <option value={2}>1 Adul</option>
                                 <option value={4}>2 Aduls</option>
@@ -98,214 +96,7 @@ const Index2 = () => {
                                 <option value={4}>5 Aduls</option>
                               </select>
                             </li>
-                            <li>
-                              <select>
-                                <option data-display="Childrens">
-                                  Childrens
-                                </option>
-                                <option value={1}>0 Children</option>
-                                <option value={2}>1 Children</option>
-                                <option value={4}>2 Childrens</option>
-                                <option value={4}>3 Childrens</option>
-                                <option value={4}>4 Childrens</option>
-                                <option value={4}>5 Childrens</option>
-                              </select>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="right-side">
-                          <button type="submit">check availability</button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </Tab.Pane>
-                <Tab.Pane
-                  className="tab-pane fade"
-                  eventKey="tab-2"
-                  role="tabpanel"
-                  aria-labelledby="tab-2"
-                >
-                  <h2>
-                    Luxury Hotel <br /> With River View
-                  </h2>
-                  {/* Check availability */}
-                  <div className="check-availability">
-                    <div className="auto-container">
-                      <form
-                        className="form"
-                        onSubmit={(e) => e.preventDefault()}
-                      >
-                        <div className="left-side">
-                          <ul>
-                            <li>
-                              <DatePicker
-                                date={date3}
-                                onChange={setDate3}
-                                placeholder={`Arrival Date`}
-                              />
-                            </li>
-                            <li>
-                              <DatePicker
-                                date={date4}
-                                onChange={setDate4}
-                                placeholder={`Arrival Date`}
-                              />
-                            </li>
-                            <li>
-                              <select>
-                                <option data-display="Aduls">Aduls</option>
-                                <option value={1}>0 Adul</option>
-                                <option value={2}>1 Adul</option>
-                                <option value={4}>2 Aduls</option>
-                                <option value={4}>3 Aduls</option>
-                                <option value={4}>4 Aduls</option>
-                                <option value={4}>5 Aduls</option>
-                              </select>
-                            </li>
-                            <li>
-                              <select>
-                                <option data-display="Childrens">
-                                  Childrens
-                                </option>
-                                <option value={1}>0 Children</option>
-                                <option value={2}>1 Children</option>
-                                <option value={4}>2 Childrens</option>
-                                <option value={4}>3 Childrens</option>
-                                <option value={4}>4 Childrens</option>
-                                <option value={4}>5 Childrens</option>
-                              </select>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="right-side">
-                          <button type="submit">check availability</button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </Tab.Pane>
-                <Tab.Pane
-                  className="tab-pane fade"
-                  eventKey="tab-3"
-                  role="tabpanel"
-                  aria-labelledby="tab-3"
-                >
-                  <h2>
-                    Luxury Hotel <br /> With River View
-                  </h2>
-                  {/* Check availability */}
-                  <div className="check-availability">
-                    <div className="auto-container">
-                      <form
-                        className="form"
-                        onSubmit={(e) => e.preventDefault()}
-                      >
-                        <div className="left-side">
-                          <ul>
-                            <li>
-                              <DatePicker
-                                date={date5}
-                                onChange={setDate5}
-                                placeholder={`Arrival Date`}
-                              />
-                            </li>
-                            <li>
-                              <DatePicker
-                                date={date6}
-                                onChange={setDate6}
-                                placeholder={`Arrival Date`}
-                              />
-                            </li>
-                            <li>
-                              <select>
-                                <option data-display="Aduls">Aduls</option>
-                                <option value={1}>0 Adul</option>
-                                <option value={2}>1 Adul</option>
-                                <option value={4}>2 Aduls</option>
-                                <option value={4}>3 Aduls</option>
-                                <option value={4}>4 Aduls</option>
-                                <option value={4}>5 Aduls</option>
-                              </select>
-                            </li>
-                            <li>
-                              <select>
-                                <option data-display="Childrens">
-                                  Childrens
-                                </option>
-                                <option value={1}>0 Children</option>
-                                <option value={2}>1 Children</option>
-                                <option value={4}>2 Childrens</option>
-                                <option value={4}>3 Childrens</option>
-                                <option value={4}>4 Childrens</option>
-                                <option value={4}>5 Childrens</option>
-                              </select>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="right-side">
-                          <button type="submit">check availability</button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </Tab.Pane>
-                <Tab.Pane
-                  className="tab-pane fade"
-                  eventKey="tab-4"
-                  role="tabpanel"
-                  aria-labelledby="tab-4"
-                >
-                  <h2>
-                    Luxury Hotel <br /> With River View
-                  </h2>
-                  {/* Check availability */}
-                  <div className="check-availability">
-                    <div className="auto-container">
-                      <form
-                        className="form"
-                        onSubmit={(e) => e.preventDefault()}
-                      >
-                        <div className="left-side">
-                          <ul>
-                            <li>
-                              <DatePicker
-                                date={date7}
-                                onChange={setDate7}
-                                placeholder={`Arrival Date`}
-                              />
-                            </li>
-                            <li>
-                              <DatePicker
-                                date={date8}
-                                onChange={setDate8}
-                                placeholder={`Arrival Date`}
-                              />
-                            </li>
-                            <li>
-                              <select>
-                                <option data-display="Aduls">Aduls</option>
-                                <option value={1}>0 Adul</option>
-                                <option value={2}>1 Adul</option>
-                                <option value={4}>2 Aduls</option>
-                                <option value={4}>3 Aduls</option>
-                                <option value={4}>4 Aduls</option>
-                                <option value={4}>5 Aduls</option>
-                              </select>
-                            </li>
-                            <li>
-                              <select>
-                                <option data-display="Childrens">
-                                  Childrens
-                                </option>
-                                <option value={1}>0 Children</option>
-                                <option value={2}>1 Children</option>
-                                <option value={4}>2 Childrens</option>
-                                <option value={4}>3 Childrens</option>
-                                <option value={4}>4 Childrens</option>
-                                <option value={4}>5 Childrens</option>
-                              </select>
-                            </li>
+                            
                           </ul>
                         </div>
                         <div className="right-side">
@@ -316,78 +107,6 @@ const Index2 = () => {
                   </div>
                 </Tab.Pane>
               </Tab.Content>
-              <div className="outer-box">
-                <div className="nav-tab-wrapper">
-                  <Nav
-                    as={"ul"}
-                    className="nav nav-tabs"
-                    id="myTab"
-                    role="tablist"
-                  >
-                    <Nav.Item as="li" className="nav-item" role="presentation">
-                      <Nav.Link
-                        as={"button"}
-                        className="nav-link"
-                        data-bs-toggle="tab"
-                        eventKey="tab-1"
-                        type="button"
-                        role="tab"
-                        aria-selected="true"
-                      >
-                        <span>
-                          <i className="fal fa-window" /> Our Rooms
-                        </span>
-                      </Nav.Link>
-                    </Nav.Item>
-                    <li className="nav-item" role="presentation">
-                      <Nav.Link
-                        as={"button"}
-                        className="nav-link"
-                        data-bs-toggle="tab"
-                        eventKey="tab-2"
-                        type="button"
-                        role="tab"
-                        aria-selected="false"
-                      >
-                        <span>
-                          <i className="fal fa-bed" /> Room Setup
-                        </span>
-                      </Nav.Link>
-                    </li>
-                    <li className="nav-item" role="presentation">
-                      <Nav.Link
-                        as={"button"}
-                        className="nav-link"
-                        data-bs-toggle="tab"
-                        eventKey="tab-3"
-                        type="button"
-                        role="tab"
-                        aria-selected="false"
-                      >
-                        <span>
-                          <i className="fal fa-plane" /> Transport
-                        </span>
-                      </Nav.Link>
-                    </li>
-                    <li className="nav-item" role="presentation">
-                      <Nav.Link
-                        as={"button"}
-                        className="nav-link"
-                        data-bs-toggle="tab"
-                        eventKey="tab-4"
-                        type="button"
-                        role="tab"
-                        aria-selected="false"
-                      >
-                        <span>
-                          <i className="fal fa-glass" />
-                          Bar &amp; Drinks
-                        </span>
-                      </Nav.Link>
-                    </li>
-                  </Nav>
-                </div>
-              </div>
             </Tab.Container>
           </div>
         </div>
@@ -414,7 +133,7 @@ const Index2 = () => {
                 </div>
                 <h2 className="sec-title">
                   Welcome To Our <br />{" "}
-                  <span className="theme-color">King Hotel</span>
+                  <span className="theme-color">Wiku Hotel</span>
                 </h2>
                 <div className="text">
                   We Have Over 40 Payment Ways for Locking the Lowest Room
@@ -717,14 +436,14 @@ const Index2 = () => {
                 <img src="assets/images/icons/icon-3.png" alt="" />
               </div>
               <div className="contact-text">
-                Contact us now!<span>907. 896. 562. 78</span>
+                Contact us now!<span>+62 823 3511 7847</span>
               </div>
               <div className="text">
                 Get Support anytime thats mean 24/7 our stuff is ready for you.
               </div>
-              <Link href="/contact">
+              <Link href="https://api.whatsapp.com/send/?phone=6282335117847&text&type=phone_number&app_absent=0">
                 <a className="theme-btn btn-style-one">
-                  <span>Get Appointment</span>
+                  <span>Whatsapp now</span>
                 </a>
               </Link>
             </div>
@@ -785,13 +504,10 @@ const Index2 = () => {
                         <i className="flaticon-quote" />
                       </div>
                       <div className="text">
-                        “ A testimonial is a statement from a past of this
-                        customer that describes how a product or service helped
-                        them. Testimonials are often written by the business
-                        based on specific ”
+                        “ Hp mana Hp ”
                       </div>
-                      <div className="name">Alexis D. Dowson</div>
-                      <div className="designation">Founder Of Alexis Co.</div>
+                      <div className="name">Pak Firman</div>
+                      <div className="designation">Kesiswaan Moklet</div>
                     </div>
                   </div>
                 </div>
@@ -833,13 +549,10 @@ const Index2 = () => {
                         <i className="flaticon-quote" />
                       </div>
                       <div className="text">
-                        “ A testimonial is a statement from a past of this
-                        customer that describes how a product or service helped
-                        them. Testimonials are often written by the business
-                        based on specific ”
+                        “ Arek SMK iku kerjo rek ”
                       </div>
-                      <div className="name">Alexis D. Dowson</div>
-                      <div className="designation">Founder Of Alexis Co.</div>
+                      <div className="name">Pak Emil</div>
+                      <div className="designation">BK Moklet</div>
                     </div>
                   </div>
                 </div>
@@ -881,13 +594,10 @@ const Index2 = () => {
                         <i className="flaticon-quote" />
                       </div>
                       <div className="text">
-                        “ A testimonial is a statement from a past of this
-                        customer that describes how a product or service helped
-                        them. Testimonials are often written by the business
-                        based on specific ”
+                        “ Cipute endii ! ”
                       </div>
-                      <div className="name">Alexis D. Dowson</div>
-                      <div className="designation">Founder Of Alexis Co.</div>
+                      <div className="name">Bu Kinan</div>
+                      <div className="designation">Kesiswaan Moklet</div>
                     </div>
                   </div>
                 </div>
@@ -929,13 +639,10 @@ const Index2 = () => {
                         <i className="flaticon-quote" />
                       </div>
                       <div className="text">
-                        “ A testimonial is a statement from a past of this
-                        customer that describes how a product or service helped
-                        them. Testimonials are often written by the business
-                        based on specific ”
+                        “ Kalau mengerjakan UKK jangan diambil stress, sesekali juga harus refreshing ”
                       </div>
-                      <div className="name">Alexis D. Dowson</div>
-                      <div className="designation">Founder Of Alexis Co.</div>
+                      <div className="name">Bu Amalia</div>
+                      <div className="designation">Guru Produktif RPL Moklet</div>
                     </div>
                   </div>
                 </div>
@@ -1103,127 +810,6 @@ const Index2 = () => {
             <div className="col-lg-6">
               <div className="image">
                 <img src="assets/images/resource/image-19.jpg" alt="" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* section twenty-one */}
-      <section
-        className="section-twenty-one"
-        style={{
-          backgroundImage: "url(assets/images/resource/image-20.jpg)",
-        }}
-      >
-        <div className="auto-container">
-          <div className="row align-items-center">
-            <div className="col-lg-6">
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="block-twenty-one">
-                    <div className="pricing-title">Basic</div>
-                    <div className="pricing">
-                      <sub>$</sub>29<span>.99</span>
-                    </div>
-                    <div className="icon-list">
-                      <ul>
-                        <li>
-                          <i className="fas fa-check" />
-                          Food take-way option
-                        </li>
-                        <li>
-                          <i className="fas fa-check" />
-                          Easy To Access Door
-                        </li>
-                        <li>
-                          <i className="fas fa-check" />
-                          Unlimited Drinks
-                        </li>
-                        <li className="unavailable">
-                          <i className="fas fa-check" />
-                          Gym &amp; Other Equipment
-                        </li>
-                        <li className="unavaliable">
-                          <i className="fas fa-check" />
-                          Support 24/7 Online
-                        </li>
-                      </ul>
-                    </div>
-                    <a href="#" className="theme-btn btn-style-one dark">
-                      <span>Make Your Order</span>
-                    </a>
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="block-twenty-one">
-                    <div className="pricing-title">Advanced</div>
-                    <div className="pricing">
-                      <sub>$</sub>49<span>.99</span>
-                    </div>
-                    <div className="icon-list">
-                      <ul>
-                        <li>
-                          <i className="fas fa-check" />
-                          Food take-way option
-                        </li>
-                        <li>
-                          <i className="fas fa-check" />
-                          Easy To Access Door
-                        </li>
-                        <li>
-                          <i className="fas fa-check" />
-                          Unlimited Drinks
-                        </li>
-                        <li>
-                          <i className="fas fa-check" />
-                          Gym &amp; Other Equipment
-                        </li>
-                        <li>
-                          <i className="fas fa-check" />
-                          Support 24/7 Online
-                        </li>
-                      </ul>
-                    </div>
-                    <a href="#" className="theme-btn btn-style-one dark">
-                      <span>Make Your Order</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="block-twenty-two">
-                <div className="image-icon text-center mb-10">
-                  <img src="assets/images/resource/image-13.png" alt="" />
-                </div>
-                <h2 className="sec-title text-light text-center mb-20">
-                  Hotel Plans
-                </h2>
-                <div className="text">
-                  A business consulting company that can produce anything. Drive
-                  more customers through digital.
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="block-50">
-                      <h4>Flexible Price</h4>
-                      <div className="text-two">
-                        Hotel content marketing focuses on creating relevant
-                        content to attract potential guests.
-                      </div>
-                      <div className="pricing-border" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="block-50">
-                      <h4>Our Resort</h4>
-                      <div className="text-two">
-                        Hotel content marketing focuses on creating relevant
-                        content to attract potential guests.
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

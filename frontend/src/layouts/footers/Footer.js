@@ -31,7 +31,7 @@ const Footer = ({ noBg, extraCls }) => {
                         <a href="/room-grid">Room</a>
                       </li>
                       <li>
-                        <a href="#">Admin</a>
+                        <a href="/login">Admin</a>
                       </li>
                     </ul>
                   </div>

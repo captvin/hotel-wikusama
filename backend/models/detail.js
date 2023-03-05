@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     id_pemesanan: DataTypes.INTEGER,
     id_kamar: DataTypes.INTEGER,
     harga: DataTypes.INTEGER,
-    tgl_terisi: DataTypes.DATE
+    tgl_terisi: DataTypes.DATEONLY
   }, {
     sequelize,
     modelName: 'detail',

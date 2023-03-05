@@ -17,7 +17,7 @@ const Contact = () => {
                 <div className="icon-border" />
                 <h3>Email Address</h3>
                 <div className="text">
-                  info@webmail.com <br /> jobs.examplejob@com
+                  alpinoke@gmail.com <br /> wikuHotel@gmail.com
                 </div>
               </div>
             </div>
@@ -29,7 +29,8 @@ const Contact = () => {
                 <div className="icon-border" />
                 <h3>Phone Number</h3>
                 <div className="text">
-                  +897 676 5654 654 <br /> +908(097) 564 765 76
+                  +62 823 3511 7847 <br /> 
+                  082335117847
                 </div>
               </div>
             </div>
@@ -41,9 +42,9 @@ const Contact = () => {
                 <div className="icon-border" />
                 <h3>Office Address</h3>
                 <div className="text">
-                  12/A, Romania City
+                  Jl. Danau Ranau
                   <br />
-                  New Joursey, UK
+                  Malang, Indonesia
                 </div>
               </div>
             </div>
@@ -54,7 +55,7 @@ const Contact = () => {
       <section className="map-section">
         <h4 className="d-none">heading</h4>
         <div className="contact-map">
-          <iframe src="https://maps.google.com/maps?q=new%20york&t=&z=13&ie=UTF8&iwloc=&output=embed" />
+          <iframe src="https://maps.google.com/maps?q=smk%20telkom%20malang&t=&z=13&ie=UTF8&iwloc=&output=embed" />
         </div>
       </section>
       {/* contact section */}

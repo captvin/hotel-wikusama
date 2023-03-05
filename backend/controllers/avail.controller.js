@@ -1,46 +1,75 @@
 const { kamar, detail, pemesanan, tipe } = require('@models')
 const { NotFound, Forbidden } = require('http-errors')
-const { Op } =require('sequelize')
+const { Op } = require('sequelize')
 
 async function findAll(req, res, next) {
     if (req.user.abilities.cannot('read', (kamar, detail, pemesanan, tipe))) {
         return next(Forbidden())
     }
-    const { body } = req
-    const result = await tipe.findAll({
+
+    const options = {
+        
+        // order: [
+        //     ['nomor', 'ASC']
+        // ],
+        attributes: ['id','nama_tipe'],
         include: [
             {
                 model: kamar,
                 as: "kamar",
-                attributes: ["id"],
+                attributes: ["nomor"],
                 required: false,
-                where: {
-                    id_tipe: body.id_tipe,
-                },
+                where:{},
                 include: [
                     {
                         model: detail,
                         as: "detail",
-                        attributes: ["tgl_akses"],
+                        attributes: ["tgl_terisi"],
                         required: false,
                         where: {
-                            tgl_akses: {
-                                [Op.and]: {
-                                    [Op.between]: [body.tgl_in, body.tgl_out],
-                                }
-                            },
-                        },
+                            ['tgl_terisi']:{
+                                
+                            }
+                        }
                     },
                 ],
             },
         ],
-        where: {
-            "$kamar.id_tipe$": req.body.id,
-            "$kamar->detail.tgl_akses$": {
-                [Op.is]: null
-            },
-        },
-    })
+
+        
+        where: {}
+    }
+
+    const { id_tipe, tgl_in, tgl_out } = req.query
+    const dateOut = new Date(tgl_out)
+    dateOut.setDate(dateOut.getDate() - 1)
+    const tgl_out1 = dateOut.toISOString().slice(0, 10)
+    
+    if (tgl_in && tgl_out) {
+        options.include[0].include[0].where.tgl_terisi ={
+            [Op.between]: [tgl_in, tgl_out1] 
+                
+            
+        } 
+    }
+    
+    if (id_tipe) {
+        options.where = {
+            
+              ['id']: id_tipe,
+              "$kamar->detail.tgl_terisi$": {[Op.is]: null}
+            
+        }
+    }
+    else{
+        options.where = {
+            
+            "$kamar->detail.tgl_terisi$": {[Op.is]: null}
+          
+      }
+    }
+
+    const result = await tipe.findAll(options);
 
     res.json(result)
 }
@@ -54,7 +83,7 @@ async function findById(req, res, next) {
     if (req.query.getKamar === 'true') {
         relations.push('transaksi')
     }
-    const result = await kamar.findByPk(id, {include: "tipe"})
+    const result = await kamar.findByPk(id, { include: "tipe" })
     result
         ? res.json(result)
         : next(NotFound())
@@ -66,12 +95,12 @@ async function create(req, res, next) {
     }
     const { body } = req
     const nomor = body.nomor
-    const already = await kamar.findOne({where: {nomor}})
+    const already = await kamar.findOne({ where: { nomor } })
 
-    if(already){
-        return res.send({message: "Nomor kamar already exists"})
+    if (already) {
+        return res.send({ message: "Nomor kamar already exists" })
     }
-    else{
+    else {
         const result = await kamar.create(body)
         res.json(result)
     }
@@ -84,15 +113,15 @@ async function update(req, res, next) {
     const { id } = req.params
     const { body } = req
     nomor = body.nomor
-    const already = await kamar.findOne({where:{[Op.and]: [{nomor:{[Op.like]:nomor}},{id:{[Op.ne]:id}}]} })
+    const already = await kamar.findOne({ where: { [Op.and]: [{ nomor: { [Op.like]: nomor } }, { id: { [Op.ne]: id } }] } })
 
-    if(already){
-        return res.send({message: "Nomor kamar already exists"})
+    if (already) {
+        return res.send({ message: "Nomor kamar already exists" })
     }
-    else{
-        const result = await kamar.update(body, {where: {id}})
+    else {
+        const result = await kamar.update(body, { where: { id } })
         result[0]
-            ? res.json({message: "Successfully updated"})
+            ? res.json({ message: "Successfully updated" })
             : next(NotFound())
     }
 }

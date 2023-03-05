@@ -21,8 +21,8 @@ const DonutChart = dynamic(() => import("../src/components/DonutChart"), {
 const Index3 = () => {
   const [date, setDate] = useState(null);
   const [date2, setDate2] = useState(null);
-  return (
-    <Layouts noBg extraCls={"ex"} noHeader>
+  return (<Layouts noBg extraCls={"ex"} noHeader>
+    
       <Header3 />
       {/* Bnner Section */}
       <section className="banner-section style-two">

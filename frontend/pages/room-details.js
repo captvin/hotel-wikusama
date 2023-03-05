@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Accordion } from "react-bootstrap";
 import PageBanner from "../src/components/PageBanner";
 import Layouts from "../src/layouts/Layouts";
+import axios from "../src/utils/axios";
+
 
 const RoomDetails = () => {
   const [activeAcc, setActiveAcc] = useState("acc-1");
@@ -10,38 +12,45 @@ const RoomDetails = () => {
     activebtn = (value) => (value === activeAcc ? "active" : ""),
     activeContent = (value) =>
       value === activeAcc ? { display: "block" } : { display: "none" };
+
+  const [tipe, setDataTipe] = useState([])
+  const [id, setId] = useState(null);
+  useEffect(() => {
+    //get id dari params
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    setId(id);
+
+    //get data dari BE
+    const getTipe = async () =>{
+      await axios
+      .get(`/tipe/${id}`,)
+      .then((res) => setDataTipe(res.data))
+      .catch((err) => console.log("error bodoh"))
+    }
+    
+    Promise.all([getTipe()])
+
+  }, []);
+  
   return (
     <Layouts>
-      <PageBanner pageName={"Room Details"} />
+      <PageBanner pageName={`Room Details`} />
       <section className="section-thirty-nine">
         <div className="auto-container">
           <div className="row">
-            <div className="col-lg-3 col-md-6">
-              <div className="block-thirty-nine">
-                <div className="image">
-                  <img src="assets/images/resource/image-57.jpg" alt="" />
-                </div>
-                <div className="image-two">
-                  <img src="assets/images/resource/image-58.jpg" alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-6">
+            
+            <div className="" >
               <div className="image">
-                <img src="assets/images/resource/image-59.jpg" alt="" />
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6">
-              <div className="image">
-                <img src="assets/images/resource/image-60.jpg" alt="" />
+                <img src= {`https://wikusama-hotel.s3.ap-southeast-1.amazonaws.com/tipe/${tipe.image}`} alt="" />
               </div>
             </div>
           </div>
           <div className="row">
             <div className="col-lg-8">
               <div className="block-forty">
-                <div className="pricing">$200 / Night</div>
-                <h4>Poxicon Luxary Room</h4>
+                <div className="pricing">{tipe.harga} / Night</div>
+                <h4>{tipe.nama_tipe}</h4>
                 <ul>
                   <li>
                     <i className="flaticon-preview" />
@@ -56,13 +65,8 @@ const RoomDetails = () => {
                     <span>3 Bathrooms</span>
                   </li>
                 </ul>
-                <div className="text">
-                  Instantly access Secret Prices when you download our app. Look
-                  out for ’Your Secret Price’ on selected hotels and save up to
-                  40%. We don’t share Secret Prices with other sites: these are
-                  lower prices that we’ve specially negotiated for our customers
-                  who have subscribed to our emails, downloaded our app or those
-                  who have joined Hotels.com Rewards.
+                {/* <div className="text">
+                  {tipe.deskripsi}
                 </div>
                 <div className="text-two">
                   Collect 10 stamps, get 1 reward* night with Hotels.com
@@ -71,17 +75,12 @@ const RoomDetails = () => {
                   when you book for others. Collect stamps after your stay at
                   over 1,000,000 properties around the world and redeem reward
                   nights anytime.
-                </div>
+                </div> */}
                 <div className="bottom-border">
-                  <h3>Property Highlights</h3>
+                  <h3>Deskripsi</h3>
                 </div>
                 <div className="text-three">
-                  Instantly access Secret Prices when you download our app. Look
-                  out for ’Your Secret Price’ on selected hotels and save up to
-                  40%. We don’t share Secret Prices with other sites: these are
-                  lower prices that we’ve specially negotiated for our customers
-                  who have subscribed to our emails, downloaded our app or those
-                  who have joined Hotels.com Rewards.
+                  {tipe.deskripsi}
                 </div>
               </div>
               <div className="row">
@@ -259,8 +258,8 @@ const RoomDetails = () => {
                   </Accordion.Toggle>
                   <Accordion.Collapse
                     eventKey="acc-1"
-                    // className={`acc-content `}
-                    // style={activeContent("acc-1")}
+                  // className={`acc-content `}
+                  // style={activeContent("acc-1")}
                   >
                     <div className="content">
                       <div className="text">
